@@ -60,38 +60,18 @@ public class GUI {
 			interactiveElements.get(i).add(decrButtons.get(i));
 			
 			
-			panel.add(monitoredComics.get(i).tableScroll, BorderLayout.NORTH);
+			panel.add(monitoredComics.get(i).observerList.get(0).component, BorderLayout.NORTH);
+//			panel.add(monitoredComics.get(i).tableScroll, BorderLayout.NORTH);
 
 			comics.get(i).interactiveElements.setLayout(new BoxLayout(comics.get(i).interactiveElements, BoxLayout.Y_AXIS));
 			panel.add(interactiveElements.get(i), BorderLayout.EAST);
 			panel.add(covers.get(i), BorderLayout.WEST);
 			
-			
-			
-//			monitoredComics.get(i).incrReadChapter.addActionListener(new ButtonListener(monitoredComics.get(i)));
-//			monitoredComics.get(i).decrReadChapter.addActionListener(new ButtonListener(monitoredComics.get(i)));
-			
-			
 			i++;
 		}
-		
-
-		
+			
 		ButtonListener listener = new ButtonListener(monitoredComics.get(0));
 		monitoredComics.get(0).button.addActionListener(listener);
-//		monitoredComics.get(0).incrReadChapter.addActionListener(listener);
-//		monitoredComics.get(0).decrReadChapter.addActionListener(listener);
-		
-
-//		interactiveElements.setPreferredSize(new Dimension(300,400));
-//
-//		interactiveElements.add(monitoredComics.get(0).button);
-//		interactiveElements.add(monitoredComics.get(0).incrReadChapter);
-//		interactiveElements.add(monitoredComics.get(0).decrReadChapter);
-		//panels.get(0).add(monitoredComics.get(0).tableScroll, BorderLayout.NORTH);
-		
-//		interactiveElements.add(Box.createVerticalGlue());
-//		interactiveElements.add(currentOPField);
 
 
 		System.out.println("DR = " + monitoredComics.get(3).getTitle());

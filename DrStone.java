@@ -20,17 +20,18 @@ public class DrStone extends Comics implements ComicsInterface {
 		//loadLastChapter();
 		loadLastReadChapter();
 		updateStatus();
-		
 		tableData[0][0] = title;
 		tableData[0][1] = author;
 		tableData[0][2] = lastReadChapter;
 		tableData[0][3] = lastChapter;
 		table = new JTable(tableData, columnNames);
 		table.setEnabled(false);
-
-		 tableScroll = new JScrollPane(table);
-
-		 tableScroll.setPreferredSize(new Dimension(0, 39));
+		tableScroll = new JScrollPane(table);
+		tableScroll.setPreferredSize(new Dimension(0, 39));
+		for (GUIElement guiE : observerList)
+		{
+			guiE.update(tableData);
+		}
 		
 		//updateDatabase();
 	}
@@ -86,16 +87,18 @@ public class DrStone extends Comics implements ComicsInterface {
 	public void updateStatus()
 	{
 		System.out.println("updateStatus()");
-		URL url;
 		InputStream is = null;
 		BufferedReader reader;
 		String line = null;
 		
+		URLConnection connection;
+		
 		try
 		{
-			url = new URL("https://mangastream.com/manga/dr_stone");
-			is = url.openStream();
-			reader = new BufferedReader(new InputStreamReader(is));
+			connection = new URL("http://mangastream.com/manga/dr_stone").openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
+			reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
 			while ((line = reader.readLine()) != null)
 			{
 				if (getNewChapter(line) > lastChapter)

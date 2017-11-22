@@ -1,16 +1,20 @@
 /*Adam Szkolny*/
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class Comics implements ComicsInterface//, Serializable
+public class Comics implements ComicsInterface, SubjectForGUI//, Serializable
 {
 	protected String title;
 	protected String author;
 	protected int lastChapter;
 	protected int lastReadChapter;
 	protected String pathToCover;
+	
+	ArrayList<GUIElement> observerList = new ArrayList<GUIElement>();
 	
 	JPanel interactiveElements = new JPanel();
 	public JButton button;
@@ -28,6 +32,7 @@ public class Comics implements ComicsInterface//, Serializable
 		this.author = "N/A";
 		this.lastChapter = 0;
 		this.lastReadChapter = 0;
+		registerObserver(new HeaderTable());
 		
 	}
 	
@@ -123,4 +128,28 @@ public class Comics implements ComicsInterface//, Serializable
 	{
 		
 	}
+	
+	// Overriding SubjectForGUI interface methods
+	@Override
+	public void registerObserver(GUIElement observer)
+	{
+		observerList.add(observer);
+	}
+	
+	@Override
+	public void removeObserver(GUIElement observer)
+	{
+		observerList.remove(observer);
+	}
+	
+	@Override
+	public void notifyObservers()
+	{
+		for (GUIElement o : observerList)
+		{
+			o.update(tableData);
+		};
+	}
+	
+	
 }

@@ -17,6 +17,7 @@ public class OnePiece extends Comics implements ComicsInterface {
 		button = new JButton("Check for new chapter");
 		loadLastReadChapter();
 		updateStatus();
+		System.out.println("NEW ONE PIECE" + lastChapter + "\n");
 		tableData[0][0] = title;
 		tableData[0][1] = author;
 		tableData[0][2] = lastReadChapter;
@@ -25,6 +26,7 @@ public class OnePiece extends Comics implements ComicsInterface {
 		table.setEnabled(false);
 		tableScroll = new JScrollPane(table);
 		tableScroll.setPreferredSize(new Dimension(0, 39));
+		observerList.get(0).update(tableData);
 	}
 	
 	private void loadLastReadChapter()
@@ -55,18 +57,21 @@ public class OnePiece extends Comics implements ComicsInterface {
 	public void updateStatus()
 	{
 		System.out.println("updateStatus()");
-		URL url;
 		InputStream is = null;
 		BufferedReader reader;
 		String line = null;
 		
+		URLConnection connection;
+		
 		try
 		{
-			url = new URL("https://mangastream.com/manga/one_piece");
-			is = url.openStream();
-			reader = new BufferedReader(new InputStreamReader(is));
+			connection = new URL("http://mangastream.com/manga/one_piece").openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
+			reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+			
 			while ((line = reader.readLine()) != null)
-			{
+			{	
 				if (getNewChapter(line) >= lastChapter)
 				{
 					lastChapter = getNewChapter(line);
@@ -118,12 +123,13 @@ public class OnePiece extends Comics implements ComicsInterface {
 	
 	private int getNewChapter(String stringFromWebpage)
 	{
-		
+
 		String line = "<td><a href=\"/r/one_piece/";
 		
 		String  number = null;
 		if (stringFromWebpage.startsWith(line))
 		{
+
 			stringFromWebpage = stringFromWebpage.replace("<td><a href=\"/r/one_piece/", "");
 			number = stringFromWebpage.substring(0, stringFromWebpage.indexOf("/"));
 			System.out.println(stringFromWebpage);

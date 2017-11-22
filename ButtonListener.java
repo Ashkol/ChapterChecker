@@ -16,13 +16,17 @@ public class ButtonListener implements ActionListener{
 				comics.setlastReadchapter(comics.lastReadChapter + 1);
 				comics.updateDatabase();
 				comics.tableData[0][2] = comics.lastReadChapter;
-				comics.table.repaint();
+				//comics.observerList.get(0).update(comics.tableData);
+				comics.observerList.get(0).component.repaint();
+				
+				
 		} else if (event.getSource().equals(comics.decrReadChapter) && comics.getLastReadChapter() > 0)
 		{
-		comics.setlastReadchapter(comics.lastReadChapter - 1);
-		comics.updateDatabase();
-		comics.tableData[0][2] = comics.lastReadChapter;
-		comics.table.repaint();
+			comics.setlastReadchapter(comics.lastReadChapter - 1);
+			comics.updateDatabase();
+			comics.tableData[0][2] = comics.lastReadChapter;
+			comics.table.repaint();
+			comics.observerList.get(0).component.repaint();
 		}
 	}
 	
