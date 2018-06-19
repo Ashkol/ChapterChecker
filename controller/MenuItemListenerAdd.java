@@ -7,15 +7,11 @@ import businesslogic.ChapterInfo;
 import gui.AddTitleWindow;
 import gui.GUI;
 
-public class MenuItemListenerAdd implements ActionListener{
-
-	private ChapterInfo info;
-	private GUI gui;
+public class MenuItemListenerAdd extends MenuItemListener{
 
 	public MenuItemListenerAdd(ChapterInfo info, GUI gui)
 	{
-		this.info = info;
-		this.gui = gui;
+		super(info, gui);
 	}
 	
 	@Override
@@ -23,7 +19,6 @@ public class MenuItemListenerAdd implements ActionListener{
 	{
 		if (event.getSource() instanceof JMenuItem)
 		{
-//			AddTitleWindow addTitle =
 			new AddTitleWindow(info, this.gui);
 		}
 		

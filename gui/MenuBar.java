@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 
 import businesslogic.ChapterInfo;
 import controller.MenuItemListenerAdd;
+import controller.MenuItemListenerDelete;
 import controller.MenuItemListenerDownload;
 import controller.MenuItemListenerEdit;
 import controller.MenuItemListenerRead;
@@ -16,8 +17,8 @@ import controller.MenuItemListenerRemove;
 
 public class MenuBar extends JMenuBar {
 
-	private JMenu comicsMenu, editMenu, downloadMenu, readMenu;
-	private ArrayList<JMenuItem> comicsMenuItems, editdMenuItems, downloadMenuItems, readMenuItems;
+	private JMenu comicsMenu, editMenu, downloadMenu, readMenu, deleteMenu;
+	private ArrayList<JMenuItem> comicsMenuItems, editdMenuItems, downloadMenuItems, readMenuItems, deleteMenuItems;
 	private ChapterInfo info;
 	private GUI gui;
 	
@@ -29,11 +30,13 @@ public class MenuBar extends JMenuBar {
 		editdMenuItems = new ArrayList<JMenuItem>(info.getMonitoredComics().size());
 		downloadMenuItems = new ArrayList<JMenuItem>(info.getMonitoredComics().size());
 		readMenuItems = new ArrayList<JMenuItem>(info.getMonitoredComics().size());
+		deleteMenuItems = new ArrayList<JMenuItem>(info.getMonitoredComics().size());
 		
 		setComicsMenu();
 		setEditMenu();
 		setDownloadMenu();
 		setReadMenu();
+		setDeleteMenu();
 		// Adding items to first menu
 	}
 	
@@ -88,5 +91,17 @@ public class MenuBar extends JMenuBar {
 			readMenu.add(readMenuItems.get(i));
 		}
 		add(readMenu);
+	}
+	
+	private void setDeleteMenu()
+	{
+		deleteMenu = new JMenu("Delete chapters");
+		for (int i = 0; i < info.getMonitoredComics().size(); i++)
+		{
+			deleteMenuItems.add(new JMenuItem(info.getMonitoredComics().get(i).getTitle()));
+			deleteMenuItems.get(i).addActionListener(new MenuItemListenerDelete(info, gui, info.getMonitoredComics().get(i)));
+			deleteMenu.add(deleteMenuItems.get(i));
+		}
+		add(deleteMenu);
 	}
 }

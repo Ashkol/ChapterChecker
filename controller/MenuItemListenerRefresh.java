@@ -5,15 +5,11 @@ import java.awt.event.ActionListener;
 import businesslogic.ChapterInfo;
 import gui.GUI;
 
-public class MenuItemListenerRefresh implements ActionListener{
-
-	private ChapterInfo info;
-	private GUI gui;
+public class MenuItemListenerRefresh extends MenuItemListener{
 
 	public MenuItemListenerRefresh(ChapterInfo info, GUI gui)
 	{
-		this.info = info;
-		this.gui = gui;
+		super(info, gui);
 	}
 	
 	@Override

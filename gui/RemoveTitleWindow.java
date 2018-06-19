@@ -16,6 +16,7 @@ public class RemoveTitleWindow extends JFrame{
 	private GUI gui;
 	private JScrollPane scroll;
 	private ArrayList<JCheckBox> checkBoxes;
+	private ArrayList<JCheckBox> optionsCheckBoxes;
 	
 	private Container frameContent;
 	private JPanel content, buttonPanel, checkboxesPanel;
@@ -35,11 +36,13 @@ public class RemoveTitleWindow extends JFrame{
 		content.add(scroll);
 		content.add(buttonPanel,BorderLayout.SOUTH);
 		checkBoxes = new ArrayList<JCheckBox>(info.getMonitoredComics().size());
+		optionsCheckBoxes = new ArrayList<JCheckBox>();
 		this.info = info;
 		this.gui = gui;
 		
 		setProperties();
 		setCheckBoxes();
+		setOptionsCheckBoxes();
 		setRemoveButton();
 	}
 	
@@ -62,12 +65,21 @@ public class RemoveTitleWindow extends JFrame{
 		}
 	}
 	
+	private void setOptionsCheckBoxes()
+	{
+		optionsCheckBoxes.add(new JCheckBox("Delete downloaded chapters."));
+		for (JCheckBox box : optionsCheckBoxes)
+		{
+			buttonPanel.add(box);
+		}
+	}
+	
 	private void setRemoveButton()
 	{
 		removeButton = new JButton("Remove comics");
 		removeButton.setPreferredSize(removeButton.getPreferredSize());
 		buttonPanel.add(removeButton);
-		removeButton.addActionListener(new RemoveComicsButtonListener(info, gui, checkBoxes, this));
+		removeButton.addActionListener(new RemoveComicsButtonListener(info, gui, checkBoxes, optionsCheckBoxes, this));
 	}
 	
 }

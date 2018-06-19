@@ -10,23 +10,17 @@ import businesslogic.Comics;
 import gui.GUI;
 import gui.ReadTitleWindowChoose;
 
-public class MenuItemListenerRead implements ActionListener{
+public class MenuItemListenerRead extends MenuItemListener{
 
-	private ChapterInfo info;
-	private GUI gui;
-	private Comics comics;
 
 	public MenuItemListenerRead(ChapterInfo info, GUI gui, Comics comics)
 	{
-		this.info = info;
-		this.gui = gui;
-		this.comics = comics;
+		super(info, gui, comics);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{
-		
 		File directory = new File(this.comics.getTitle());
 		if (event.getSource() instanceof JMenuItem &&
 			directory.exists())

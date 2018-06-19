@@ -1,19 +1,18 @@
 package controller;
+
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JMenuItem;
 
 import businesslogic.ChapterInfo;
 import businesslogic.Comics;
+import gui.DeleteChaptersWindowChoose;
 import gui.GUI;
-import gui.RemoveTitleWindow;
 
-public class MenuItemListenerRemove extends MenuItemListener implements ActionListener{
-	
-	public MenuItemListenerRemove(ChapterInfo info, GUI gui)
-	{
-		super(info, gui);
-		comics = null;
+public class MenuItemListenerDelete extends MenuItemListener {
+
+	public MenuItemListenerDelete(ChapterInfo info, GUI gui, Comics comics) {
+		super(info, gui, comics);
 	}
 	
 	@Override
@@ -21,8 +20,9 @@ public class MenuItemListenerRemove extends MenuItemListener implements ActionLi
 	{
 		if (event.getSource() instanceof JMenuItem)
 		{
-			new RemoveTitleWindow(info, gui);
+			new DeleteChaptersWindowChoose(info, gui, comics);
 		}
+		
 	}
-	
+
 }

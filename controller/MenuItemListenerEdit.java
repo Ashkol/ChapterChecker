@@ -8,17 +8,11 @@ import businesslogic.Comics;
 import gui.EditTitleWindow;
 import gui.GUI;
 
-public class MenuItemListenerEdit implements ActionListener{
-
-	private ChapterInfo info;
-	private GUI gui;
-	private Comics comics;
+public class MenuItemListenerEdit extends MenuItemListener{
 
 	public MenuItemListenerEdit(ChapterInfo info, GUI gui, Comics comics)
 	{
-		this.info = info;
-		this.gui = gui;
-		this.comics = comics;
+		super(info, gui, comics);
 	}
 	
 	@Override

@@ -9,22 +9,21 @@ import javax.swing.JFrame;
 import businesslogic.ChapterInfo;
 import gui.GUI;
 
-public class RemoveComicsButtonListener implements ActionListener {
+public class DeleteChaptersButtonListener implements ActionListener {
 
 	private ChapterInfo info;
 	private GUI gui;
 	private ArrayList<JCheckBox> checkBoxes;
-	private ArrayList<JCheckBox> optionsCheckBoxes;
 	private JFrame window;
+	ArrayList<File> directories;
 	
-	
-	public RemoveComicsButtonListener(ChapterInfo info, GUI gui, ArrayList<JCheckBox> checkBoxes, ArrayList<JCheckBox> optionsCheckBoxes, JFrame window)
+	public DeleteChaptersButtonListener(ChapterInfo info, GUI gui, JFrame window, ArrayList<JCheckBox> checkBoxes, ArrayList<File> directories )
 	{
 		this.info = info;
 		this.gui = gui;
 		this.checkBoxes = checkBoxes;
 		this.window = window;
-		this.optionsCheckBoxes = optionsCheckBoxes;
+		this.directories = directories;
 	}
 	
 	@Override
@@ -34,15 +33,15 @@ public class RemoveComicsButtonListener implements ActionListener {
 		{
 			if (box.isSelected())
 			{
-				info.removeComicsByTitle(box.getText());
-			
-				// Deleting folder with chapters
-				if (optionsCheckBoxes != null && optionsCheckBoxes.get(0).isSelected())
+				for (File file : directories)
 				{
-					File dirToBeDeleted = new File(box.getText());	// box.getText() returns comics title, it's also its directory name
-					deleteDirectory(dirToBeDeleted);
+					// Be careful, if directories name ends with <something>box.getText it also will be included
+					if (file.getName().endsWith(box.getText()))
+					{
+						deleteDirectory(file);	
+					}
 				}
-				// Be VERY CAREFUL, if there's another directory with the same name as comics' title, it will be deleted with all of its content
+				
 			}
 		}
 		
@@ -55,15 +54,18 @@ public class RemoveComicsButtonListener implements ActionListener {
 	private boolean deleteDirectory(File dirToBeDeleted)
 	{
 		System.out.println("Deleting");
+		System.out.println(dirToBeDeleted.getName());
 		File[] allContents = dirToBeDeleted.listFiles();
+		System.out.println(dirToBeDeleted.getPath());
 		if (allContents != null) 
 		{
-			for (File file : allContents) {
+			System.out.println("Loop");
+			for (File file : allContents) 
+			{
 	            deleteDirectory(file);
 	        }
 	    }
 		
 		return dirToBeDeleted.delete();
 	}
-	
 }

@@ -46,7 +46,6 @@ public class ReadTitleWindowChoose extends JFrame{
 		
 		list = new JList(listOfChapters);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-//		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 
 		setProperties();
@@ -73,5 +72,5 @@ public class ReadTitleWindowChoose extends JFrame{
 		scroll.setPreferredSize(new Dimension(250, 300));
 		content.add(scroll);
 	}
-	
 }
+ 

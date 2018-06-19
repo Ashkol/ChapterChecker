@@ -8,17 +8,11 @@ import businesslogic.Comics;
 import gui.DownloadTitleWindow;
 import gui.GUI;
 
-public class MenuItemListenerDownload implements ActionListener{
-
-	private ChapterInfo info;
-	private GUI gui;
-	private Comics comics;
+public class MenuItemListenerDownload extends MenuItemListener implements ActionListener{
 
 	public MenuItemListenerDownload(ChapterInfo info, GUI gui, Comics comics)
 	{
-		this.info = info;
-		this.gui = gui;
-		this.comics = comics;
+		super(info, gui, comics);
 	}
 	
 	@Override
