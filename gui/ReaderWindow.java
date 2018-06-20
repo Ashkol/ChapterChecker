@@ -21,7 +21,8 @@ public class ReaderWindow extends JFrame{
 	private Container frameContent;
 	private JPanel content, buttonPanel, checkboxesPanel;
 	private ArrayList<File> listOfImages;
-	private JLabel image;
+//	private JLabel image;
+	private JLabel imageLeft, imageRight;
 	private Reader readerController;
 	private ArrayList<JLabel> infoList; 
 	private JPanel  leftPanel;
@@ -110,6 +111,7 @@ public class ReaderWindow extends JFrame{
 		{
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			BufferedImage myPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()));
+			BufferedImage otherPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()+1));
 			
 			System.out.println(readerController.getImageCounter());
 			
@@ -117,6 +119,7 @@ public class ReaderWindow extends JFrame{
 			double scale;
 			if (myPicture.getHeight() > screenSize.getHeight())
 			{
+				
 				scale = screenSize.getHeight()/myPicture.getHeight();
 				imageHeight = (int)((double)myPicture.getHeight() * scale);
 				imageWidth = (int)((double)myPicture.getWidth() * scale);
@@ -128,22 +131,34 @@ public class ReaderWindow extends JFrame{
 			}
 			
 			BufferedImage resizedImg = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage resizedImgOther = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = resizedImg.createGraphics();
+			Graphics2D g2Other = resizedImgOther.createGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2.drawImage(myPicture, 0, 0, imageWidth, imageHeight, null);
 		    g2.dispose();
-
-			image = new JLabel(new ImageIcon(resizedImg));
-			image.validate();
-			image.repaint();
-			getContentPane().add(image, BorderLayout.CENTER);
+		    g2Other.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2Other.drawImage(otherPicture, 0, 0, imageWidth, imageHeight, null);
+		    g2Other.dispose();
+		    
+		    imageLeft = new JLabel(new ImageIcon(resizedImg));
+		    imageRight = new JLabel(new ImageIcon(resizedImgOther));
+		    imageLeft.validate();
+		    imageRight.validate();
+			imageLeft.repaint();
+			imageRight.repaint();
+			getContentPane().setLayout(new FlowLayout());
+			getContentPane().add(imageRight, BorderLayout.CENTER);
+			getContentPane().add(imageLeft, BorderLayout.CENTER);
+			
 			validate();
 			repaint();
 		} 
 		catch (IOException ex) 
 		{
 			System.out.println("image not loaded");
-				image = new JLabel("Image not loaded");
+				imageLeft = new JLabel("Image not loaded");
+				imageRight = new JLabel("Image not loaded");
 		}
 	}
 }
