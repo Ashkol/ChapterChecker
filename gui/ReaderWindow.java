@@ -22,12 +22,17 @@ public class ReaderWindow extends JFrame{
 	private JPanel content, buttonPanel, checkboxesPanel;
 	private ArrayList<File> listOfImages;
 //	private JLabel image;
-	private JLabel imageLeft, imageRight;
+	private JLabel imageLeft;
 	private Reader readerController;
 	private ArrayList<JLabel> infoList; 
 	private JPanel  leftPanel;
 	private JPanel infoPanel;
 	private File[] chapterList;
+
+	// Right page
+	private BufferedImage pictureRight;
+	private Graphics2D g2Right;
+	private JLabel imageRight;
 	
 	
 	public ReaderWindow(File[] chapterList, ArrayList<File> listOfImages, Reader readerController)
@@ -110,8 +115,9 @@ public class ReaderWindow extends JFrame{
 		try 
 		{
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			BufferedImage myPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()));
-			BufferedImage otherPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()+1));
+			
+			BufferedImage myPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()));			
+
 			
 			System.out.println(readerController.getImageCounter());
 			
@@ -131,24 +137,47 @@ public class ReaderWindow extends JFrame{
 			}
 			
 			BufferedImage resizedImg = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			BufferedImage resizedImgOther = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = resizedImg.createGraphics();
-			Graphics2D g2Other = resizedImgOther.createGraphics();
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2.drawImage(myPicture, 0, 0, imageWidth, imageHeight, null);
 		    g2.dispose();
-		    g2Other.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g2Other.drawImage(otherPicture, 0, 0, imageWidth, imageHeight, null);
-		    g2Other.dispose();
+		    
+//		    setRightPage(pictureRight, g2Right, imageRight, imageWidth, imageHeight);
+//		    if (readerController.getImageCounter() != 0)
+//			{
+//		    	setRightPage(pictureRight, g2Right, imageRight, imageWidth, imageHeight);
+//		    	
+//				BufferedImage otherPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()+1));
+//				BufferedImage resizedImgOther = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+//			    Graphics2D g2Other = resizedImgOther.createGraphics();
+//			    g2Other.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//				g2Other.drawImage(otherPicture, 0, 0, imageWidth, imageHeight, null);
+//			    g2Other.dispose();
+//			    imageRight = new JLabel(new ImageIcon(resizedImgOther));
+//			    imageRight.validate();
+//			    imageRight.repaint();
+//			}
+	
+	
+//		    imageRight = new JLabel(new ImageIcon(resizedImg));
+		    
 		    
 		    imageLeft = new JLabel(new ImageIcon(resizedImg));
-		    imageRight = new JLabel(new ImageIcon(resizedImgOther));
+		    
 		    imageLeft.validate();
-		    imageRight.validate();
+		    
 			imageLeft.repaint();
-			imageRight.repaint();
+			
 			getContentPane().setLayout(new FlowLayout());
-			getContentPane().add(imageRight, BorderLayout.CENTER);
+			if (readerController.getImageCounter() != 0)
+			{	
+				readerController.setIncrVal(2);
+				imageRight = setRightPage(pictureRight, g2Right, imageRight, imageWidth, imageHeight);
+			    imageRight.validate();
+			    imageRight.repaint();
+				System.out.println("ADDing");
+				getContentPane().add(imageRight, BorderLayout.CENTER);	
+			}
 			getContentPane().add(imageLeft, BorderLayout.CENTER);
 			
 			validate();
@@ -160,5 +189,29 @@ public class ReaderWindow extends JFrame{
 				imageLeft = new JLabel("Image not loaded");
 				imageRight = new JLabel("Image not loaded");
 		}
+	}
+	
+	private boolean isTwoPage(BufferedImage page)
+	{
+		if (page.getWidth() > page.getHeight())
+		{
+			return true;
+		}
+		else return false;
+	}
+	
+	private JLabel setRightPage(BufferedImage rightPicture, Graphics2D g2Right, JLabel labelRight, int imageWidth, int imageHeight) throws IOException
+	{
+		System.out.println("setRightPage()");
+		rightPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()+1));
+		BufferedImage resizedImgOther = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+	    g2Right= resizedImgOther.createGraphics();
+	    g2Right.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2Right.drawImage(rightPicture, 0, 0, imageWidth, imageHeight, null);
+	    g2Right.dispose();
+//	    labelRight = new JLabel(new ImageIcon(resizedImgOther));
+//	    labelRight.validate();
+//	    labelRight.repaint();
+	    return new JLabel(new ImageIcon(resizedImgOther));
 	}
 }

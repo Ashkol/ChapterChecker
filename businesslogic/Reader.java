@@ -18,6 +18,7 @@ public class Reader {
 	private File[] chapterList;
 	private int imageCounter;
 	private int chapterIndex = 0;
+	private int pageIncrVal = 1;
 	
 	public Reader(File[] listOfChapters, String directoryPath, int selectedIndex )
 	{
@@ -59,19 +60,27 @@ public class Reader {
 		return directory.getName();
 	}
 	
+	public void setIncrVal(int i)
+	{
+		/** 
+		 * Serves for both incrementing and decrementing, should be always >= 0
+		 */
+		pageIncrVal = i;
+	}
+	
 	public void incrementImageCounter()
 	{
-		if (imageCounter + 1 <= listOfImages.size() - 1)
+		if (imageCounter +pageIncrVal<= listOfImages.size() - 1)
 		{
-			imageCounter += 1;
+			imageCounter +=pageIncrVal;
 		}
 	}
 	
 	public void decrementImageCounter()
 	{
-		if (imageCounter - 1 >= 0)
+		if (imageCounter -pageIncrVal>= 0)
 		{
-			imageCounter -= 1;
+			imageCounter -=pageIncrVal;
 		}
 	}
 	

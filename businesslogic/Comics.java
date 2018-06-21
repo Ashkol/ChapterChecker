@@ -63,6 +63,7 @@ public class Comics implements SubjectForGUI, Comparable<Comics>
 	
 	public Comics(String title, String author, int lastReadChapter, String pathToCover, String webpageAddress, String lineBeginning)
 	{
+		
 		this.title = title;
 		this.author = author;
 		this.pathToCover = pathToCover;
