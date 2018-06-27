@@ -39,7 +39,7 @@ public class ReaderWindow extends JFrame{
 		this.readerController = readerController;
 		this.listOfImages = listOfImages;
 		this.chapterList = chapterList;
-		
+
 		leftPanel = new JPanel();
 		
 		JFrame frame = new JFrame();
@@ -67,8 +67,8 @@ public class ReaderWindow extends JFrame{
 
 //		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		
-		JLabel pageCounter = new JLabel("Page " + (new Integer(readerController.getImageCounter() + 1)).toString() + "/" + 
-				(new Integer(listOfImages.size()).toString()));
+		JLabel pageCounter = new JLabel("Page " + (readerController.getImageCounter() + 1) + "/" + 
+				listOfImages.size());
 		pageCounter.setForeground(IDLE_FONT_COLOR);
 		
 		infoPanel.add(pageCounter);
@@ -158,12 +158,19 @@ public class ReaderWindow extends JFrame{
 				{
 					readerController.setDecrVal(3);
 				}
-				readerController.incrementImageCounter();
-				imageRight = setPage(pictureRight, g2Right, imageRight, imageWidth, imageHeight);
-			    imageRight.validate();
-			    imageRight.repaint();
-				getContentPane().add(imageRight, BorderLayout.CENTER);
-				System.out.println("PREV " + prevPicRatioHW());
+				if (readerController.getImageCounter() +1 < listOfImages.size())
+				{
+					readerController.incrementImageCounter();
+					imageRight = setPage(pictureRight, g2Right, imageRight, imageWidth, imageHeight);
+				    imageRight.validate();
+				    imageRight.repaint();
+					getContentPane().add(imageRight, BorderLayout.CENTER);
+					System.out.println("PREV " + prevPicRatioHW());
+				}
+				else
+				{
+					readerController.setDecrVal(2);
+				}
 			}
 			else if (prevPicRatioHW() > 1)
 			{
