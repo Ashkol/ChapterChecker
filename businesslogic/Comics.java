@@ -257,8 +257,6 @@ public class Comics implements SubjectForGUI, Comparable<Comics>
 			reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			while ((line = reader.readLine()) != null)
 			{	
-//				System.out.println(line);
-//				if (line.startsWith(lineBeginning))
 				if (line.contains(lineBeginning))
 				{
 					System.out.println("Line found");

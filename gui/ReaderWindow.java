@@ -27,19 +27,20 @@ public class ReaderWindow extends JFrame{
 	private JPanel  leftPanel;
 	private JPanel infoPanel;
 	private File[] chapterList;
+	private boolean infoPanelOn;
 
 	// Right page
 	private BufferedImage pictureRight, pictureLeft;
 	private Graphics2D g2Right, g2Left;
-	public JLabel imageRight,imageLeft;
-	
+	public JLabel imageRight,imageLeft;	
 	
 	public ReaderWindow(File[] chapterList, ArrayList<File> listOfImages, Reader readerController)
 	{
 		this.readerController = readerController;
 		this.listOfImages = listOfImages;
 		this.chapterList = chapterList;
-
+		this.infoPanelOn = false;
+		
 		leftPanel = new JPanel();
 		
 		JFrame frame = new JFrame();
@@ -64,8 +65,6 @@ public class ReaderWindow extends JFrame{
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 		infoPanel.setBackground(BACKGROUND_COLOR);
 		infoPanel.setPreferredSize(new Dimension(200, this.getHeight()));
-
-//		int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		
 		JLabel pageCounter = new JLabel("Page " + (readerController.getImageCounter() + 1) + "/" + 
 				listOfImages.size());
@@ -86,7 +85,6 @@ public class ReaderWindow extends JFrame{
 		{
 			infoList.add(new JLabel("Chapter: " + chapterList[i].getName()));
 			infoList.get(i).setForeground(IDLE_FONT_COLOR);
-
 		}
 		
 		for (int i = startingChapter; i <chapterList.length; i++)
@@ -95,13 +93,10 @@ public class ReaderWindow extends JFrame{
 			{
 				infoList.get(i).setForeground(ACTIVE_FONT_COLOR);
 			}
-			infoPanel.add((infoList.get(i)), BorderLayout.WEST);
+			infoPanel.add((infoList.get(i)), BorderLayout.CENTER);
 		}
 		
-		leftPanel.add(infoPanel);
-//		leftPanel.add(pageInfoPanel);
-		leftPanel.setBackground(BACKGROUND_COLOR);
-		add(infoPanel, BorderLayout.WEST);
+		add(infoPanel, BorderLayout.CENTER);
 	}
 	
 	public JPanel getLeftPanel()
@@ -114,7 +109,6 @@ public class ReaderWindow extends JFrame{
 		try 
 		{
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			
 			BufferedImage myPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()));			
 
 			int imageHeight = 0, imageWidth = 0; 
@@ -136,11 +130,9 @@ public class ReaderWindow extends JFrame{
 			getContentPane().setLayout(new FlowLayout());
 			
 			System.out.println("Image counter = " + readerController.getImageCounter());
-			
 			imageLeft = setPage(pictureLeft, g2Left, imageLeft, imageWidth, imageHeight);
 		    imageLeft.validate();
 			imageLeft.repaint();
-
 			
 			System.out.println("PREV " + prevPicRatioHW());
 			
@@ -214,7 +206,7 @@ public class ReaderWindow extends JFrame{
 	    return new JLabel(new ImageIcon(resizedImgOther));
 	}
 	
-	private double prevPicRatioHW() 
+	public double prevPicRatioHW() 
 	{	
 		BufferedImage prevPicture;
 		if (readerController.getImageCounter()-1 >= 0)
@@ -230,5 +222,34 @@ public class ReaderWindow extends JFrame{
 		{
 			return 1;
 		}
+	}
+	
+	// Maybe unnecessary, should not be public
+	public double currentPicRatioHW() 
+	{	
+		BufferedImage prevPicture;
+		if (readerController.getImageCounter()-1 >= 0)
+		{
+			try {				
+				prevPicture = ImageIO.read(listOfImages.get(readerController.getImageCounter()));
+				return (double) prevPicture.getHeight() / (double) prevPicture.getWidth();
+			} catch (IOException e) {
+				return 1;
+			}	
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	
+	public void setInfoPanelOn(boolean b)
+	{
+		infoPanelOn = b;
+	}
+	
+	public boolean getInfoPanelOn()
+	{
+		return infoPanelOn;
 	}
 }

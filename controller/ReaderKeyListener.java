@@ -46,9 +46,13 @@ public class ReaderKeyListener implements KeyListener {
 		case KeyEvent.VK_ESCAPE:
 			readerWindow.dispose();
 		case KeyEvent.VK_SPACE:
-			readerWindow.setInfo();
-			readerWindow.validate();
-			readerWindow.repaint();
+			if (!readerWindow.getInfoPanelOn())
+			{
+				readerWindow.setInfo();
+				readerWindow.validate();
+				readerWindow.repaint();
+				readerWindow.setInfoPanelOn(true);
+			}
 		default : 
 			break;
 		}
@@ -60,8 +64,11 @@ public class ReaderKeyListener implements KeyListener {
 		switch (key.getKeyCode())
 		{
 		case KeyEvent.VK_SPACE:
+			// Turns off info panel
+			readerController.decrementImageCounter();
 			readerWindow.getContentPane().removeAll();
 			readerWindow.setImage();
+			readerWindow.setInfoPanelOn(false);
 			break;
 		default:
 			break;

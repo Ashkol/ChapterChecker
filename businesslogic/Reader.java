@@ -27,7 +27,6 @@ public class Reader {
 		listOfImages = new ArrayList<File>();
 		chapterIndex = selectedIndex;
 		chapterList = listOfChapters;
-//		File[] images = directory.listFiles();
 		
 		File[] images = chapterList[chapterIndex].listFiles();
 
